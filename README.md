@@ -3,7 +3,7 @@
 ## Neovim Configuration
 Install vim-plug from command line.
 
-### Unix
+### Linux / Mac (bash)
 ```sh
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -27,7 +27,7 @@ Run `nvim` and execute  command `:PlugInstall` .
 ## Vim Configuration
 Install vim-plug from command line.
 
-### Unix
+### Linux / Mac (bash)
 ```sh
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
