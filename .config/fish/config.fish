@@ -1,18 +1,22 @@
 # exit
-alias ee "exit"
+alias x "exit"
 
 # ls
 alias l "exa"
 alias la "exa -a"
 alias ll "exa -lh"
-alias lal "exa -lha"
+alias lla "exa -lha"
 
 # Git
 alias gst "git status --short --branch"
-alias glog "git log --oneline --date=short --decorate=short --pretty=format:'%Cgreen%h %C(yellow)%cd %Cred%d %Creset%s %Cblue<%cn>'"
-alias ggra "git log --graph --oneline --date=short --decorate=short --pretty=format:'%Cgreen%h %C(yellow)%cd %Cred%d %Creset%s %Cblue<%cn>'"
+alias glog "git log --oneline --decorate=short --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:'%Cgreen%h %C(yellow)%cd %Cred%d %Creset%s %Cblue<%cn>'"
+alias ggra "git log --graph --oneline --decorate=short --date=format:'%Y-%m-%d %H:%M:%S' --pretty=format:'%Cgreen%h %C(yellow)%cd %Cred%d %Creset%s %Cblue<%cn>'"
 alias gdifff "git diff --name-only"
 alias gdiffw "git diff --word-diff"
+
+alias untar "tar -zxvf"
+alias getpass "openssl rand -base64 20"
+alias sha "shasum -a 256"
 
 # function gcob -d "Fuzzy-find and checkout a branch"
 #   git branch --all | grep -v HEAD | string trim | fzf | read -l result; and git checkout "$result"

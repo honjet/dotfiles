@@ -138,6 +138,7 @@ noremap! <c-b> <left>
 noremap! <c-a> <home>
 noremap! <c-e> <end>
 noremap! <c-d> <del>
+noremap <C-6> <C-^>
 
 " ---------------------------------------------------------------
 " ノーマルモードでのキーマッピング
@@ -148,7 +149,7 @@ nnoremap Y y$
 nnoremap + <c-a>
 nnoremap - <c-x>
 " 改行
-nnoremap <Enter> o<Esc>
+nnoremap <Space><Enter> o<Esc>
 " ハイライト解除
 nnoremap <Esc><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
@@ -389,20 +390,23 @@ endif
 " fzf コマンド検索
 nnoremap <Space>p :Commands<CR>
 " fzf ホームディレクトリからのファイル検索
-nnoremap <Space>ff :Files ~/<CR>
+" nnoremap <silent> <Space>ff :Files ~/<CR>
 " fzf Gitプロジェクト内のファイル検索
-nnoremap <Space>fg :GFiles<CR>
+nnoremap <Space>f :GFiles<CR>
 " fzf ファイル履歴検索
-nnoremap <Space>fh :History<CR>
+nnoremap <Space>h :History<CR>
 " fzf バッファ検索
-nnoremap <Space>fb :Buffers<CR>
+nnoremap <Space>b :Buffers<CR>
 " fzf カレントディレクトリ以下でgrep検索
 nnoremap <Space>g :Rg<CR>
 
 " NERDTree 現在のファイルを選択した状態でファイラを開く
-nnoremap <Space>fn :NERDTreeFind<CR>
+nnoremap <Space>n :NERDTreeFind<CR>
 " NERDTree ファイラの表示切り替え
-nnoremap <Space>ft :NERDTreeToggle<CR>
+nnoremap <Space>e :NERDTreeToggle<CR>
+
+" fugitive git status
+nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
 
 " ctrlp <Ctrl-p>でファイル履歴を検索
 let g:ctrlp_cmd = 'CtrlPMRUFiles'
@@ -526,6 +530,9 @@ augroup IndentSetting
   autocmd FileType markdown setlocal shiftwidth=4
 augroup end
 
+" markdownはテキストを隠さない
+let g:vim_markdown_conceal = 0
+
 " Enable rufo (RUby FOrmat)
 let g:rufo_auto_formatting = 0
 let g:rufo_silence_errors = 0
@@ -551,3 +558,4 @@ endif
 
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
+command! FishConfig e ~/.config/fish/config.fish
