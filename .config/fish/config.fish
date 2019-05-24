@@ -25,3 +25,13 @@ alias sha "shasum -a 256"
 function gcoc -d "Fuzzy-find and checkout a commit"
   git log --pretty=oneline --abbrev-commit --reverse | fzf --tac +s -e | awk '{print $1;}' | read -l result; and git checkout "$result"
 end
+
+rbenv init - | source
+
+# phpbrew
+source ~/.phpbrew/phpbrew.fish
+set -g fish_user_paths "/usr/local/opt/icu4c/bin" $fish_user_paths
+set -g fish_user_paths "/usr/local/opt/icu4c/sbin" $fish_user_paths
+set -g fish_user_paths "/usr/local/opt/libxml2/bin" $fish_user_paths
+set -g fish_user_paths "/usr/local/opt/openssl/bin" $fish_user_paths
+set -g fish_user_paths "/usr/local/sbin" $fish_user_paths

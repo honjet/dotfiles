@@ -149,7 +149,7 @@ nnoremap Y y$
 nnoremap + <c-a>
 nnoremap - <c-x>
 " 改行
-nnoremap <Space><Enter> o<Esc>
+nnoremap <Enter> o<Esc>
 " ハイライト解除
 nnoremap <Esc><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
@@ -392,7 +392,7 @@ nnoremap <Space>p :Commands<CR>
 " fzf ホームディレクトリからのファイル検索
 " nnoremap <silent> <Space>ff :Files ~/<CR>
 " fzf Gitプロジェクト内のファイル検索
-nnoremap <Space>f :GFiles<CR>
+nnoremap <Space>o :GFiles<CR>
 " fzf ファイル履歴検索
 nnoremap <Space>h :History<CR>
 " fzf バッファ検索
@@ -401,9 +401,9 @@ nnoremap <Space>b :Buffers<CR>
 nnoremap <Space>g :Rg<CR>
 
 " NERDTree 現在のファイルを選択した状態でファイラを開く
-nnoremap <Space>n :NERDTreeFind<CR>
+nnoremap <Space>f :NERDTreeFind<CR>
 " NERDTree ファイラの表示切り替え
-nnoremap <Space>e :NERDTreeToggle<CR>
+nnoremap <Space>t :NERDTreeToggle<CR>
 
 " fugitive git status
 nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
@@ -428,8 +428,9 @@ call smartinput_endwise#define_default_rules()
 let g:ale_set_highlights = 1
 " let g:ale_fix_on_save = 1
 " let g:ale_linters = {
-"       \ 'javascript': ['prettier']
+"       \ 'ruby': ['rubocop']
 "       \ }
+      " \ 'javascript': ['prettier']
 " let g:ale_fixers = {
 "       \ 'javascript': ['prettier']
 "       \ }
@@ -471,6 +472,8 @@ if has('nvim')
     nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
     " LanguageClient カーソル下の定義ジャンプ
     nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+    " LanguageClient カーソル下の実装ジャンプ
+    nnoremap <silent> <Space>li :call LanguageClient_textDocument_implementation()<CR>
     " LanguageClient カーソル下のリネーム
     nnoremap <silent> <Space>lr :call LanguageClient_textDocument_rename()<CR>
     " LanguageClient シンボルリスト
