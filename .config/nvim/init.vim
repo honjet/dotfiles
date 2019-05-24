@@ -95,6 +95,7 @@ set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr
 noremap ; :
 noremap : ;
 noremap Q <Nop>
+noremap gQ <Nop>
 
 " コマンドモード & 挿入モードでのキーマッピング
 noremap! <c-f> <right>
@@ -115,11 +116,8 @@ cnoremap <c-p> <up>
 cnoremap <c-n> <down>
 
 " 挿入モードでのキーマッピング
-inoremap jj <Esc>
 inoremap jk <Esc>
 inoremap kj <Esc>
-inoremap <c-j> <Esc>o
-inoremap <c-BS> <c-w>
 
 " ===============================================================
 " Plugin
@@ -164,7 +162,6 @@ Plug 'autozimu/LanguageClient-neovim', {
       \ 'branch': 'next',
       \ 'do': 'bash install.sh',
       \ }
-" Plug 'roxma/nvim-completion-manager'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'pbogut/deoplete-elm'
 Plug 'dzhou121/gonvim-fuzzy'
@@ -177,39 +174,46 @@ function! LightLineFilename()
 endfunction
 
 let g:lightline = {
-      \ 'component': {
-      \   'readonly': '%{&readonly?"":""}',
-      \   'bubo': "",
-      \ },
-      \ 'active': {
-      \   'left': [['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'], ['bubo']],
-      \   'right': [['percent', 'lineinfo'], ['fileformat', 'fileencoding', 'filetype'], ['linter_errors', 'linter_warnings', 'linter_ok']]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'GitBranch'
-      \ },
-      \ 'separator': { 'left': "", 'right': " " },
-      \ 'subseparator': { 'left': " ", 'right': " " }
-      \ }
+            \ 'component': {
+            \   'readonly': '%{&readonly?"":""}',
+            \   'coordinate': '%c: %l/%L',
+            \   'truncate': '%<',
+            \   'bubo': "",
+            \ },
+            \ 'active': {
+            \   'left': [['mode', 'paste'], ['filename', 'modified', 'readonly', 'gitbranch'], ['truncate']],
+            \   'right': [['coordinate'], ['fileformat', 'fileencoding', 'filetype'], ['bubo', 'linter_errors', 'linter_warnings', 'linter_ok']]
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'GitBranch'
+            \ },
+            \ 'separator': { 'left': "", 'right': " " },
+            \ 'subseparator': { 'left': "", 'right': " " }
+            \ }
+
+" lightline タブバーの表示設定
 let g:lightline.tabline = {
-      \ 'left': [ [ 'tabs' ] ],
-      \ 'right': [ [ 'close' ] ] }
+            \ 'left': [ [ 'tabs' ] ],
+            \ 'right': [ [ 'close' ] ] }
 
 " lightline 色の設定
 let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-" let g:lightline#colorscheme#powerline#palette = lightline#colorscheme#fill(s:p)
+
+" lightline コンポーネントが何を返すか
 let g:lightline.component_expand = {
-      \ 'tabs': 'lightline#tabs',
-      \ 'linter_warnings': 'LightlineLinterWarnings',
-      \ 'linter_errors': 'LightlineLinterErrors',
-      \ 'linter_ok': 'LightlineLinterOK'
-      \ }
+            \ 'tabs': 'lightline#tabs',
+            \ 'linter_warnings': 'LightlineLinterWarnings',
+            \ 'linter_errors': 'LightlineLinterErrors',
+            \ 'linter_ok': 'LightlineLinterOK'
+            \ }
+
+" lightline コンポーネントの表示色
 let g:lightline.component_type = {
-      \ 'tabs': 'tabsel',
-      \ 'readonly': 'error',
-      \ 'linter_warnings': 'warning',
-      \ 'linter_errors': 'error'
-      \ }
+            \ 'tabs': 'tabsel',
+            \ 'readonly': 'error',
+            \ 'linter_warnings': 'warning',
+            \ 'linter_errors': 'error'
+            \ }
 
 function! GitBranch() abort
   let l:branch = fugitive#head()
@@ -250,15 +254,16 @@ if executable('rg')
         \ <bang>0)
 endif
 nnoremap <Space>p :Commands<CR>
-nnoremap <Space>ff :Files ~/<CR>
-nnoremap <Space>fg :GFiles<CR>
-nnoremap <Space>fh :History<CR>
-nnoremap <Space>fb :Buffers<CR>
+nnoremap <Space>o :GFiles<CR>
+nnoremap <Space>h :History<CR>
+nnoremap <Space>b :Buffers<CR>
 nnoremap <Space>g :Rg!<CR>
 nnoremap <Space>rg :Rg<CR>
 
-nnoremap <Space>fn :NERDTreeFind<CR>
-nnoremap <Space>ft :NERDTreeToggle<CR>
+nnoremap <Space>f :NERDTreeFind<CR>
+nnoremap <Space>t :NERDTreeToggle<CR>
+
+nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
 
 let g:LanguageClient_serverCommands = {
       \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
@@ -271,6 +276,7 @@ let g:LanguageClient_autoStart = 1
 
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <Space>li :call LanguageClient_textDocument_implementation()<CR>
 nnoremap <silent> <Space>lr :call LanguageClient_textDocument_rename()<CR>
 nnoremap <silent> <Space>ls :call LanguageClient_textDocument_documentSymbol()<CR>
 nnoremap <silent> <Space>le :call LanguageClient_textDocument_references()<CR>
@@ -294,6 +300,7 @@ call deoplete#custom#source('_',  'max_kind_width', 0)
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
 
 set runtimepath+=~/.vim/ultisnips/
 let g:UltiSnipsSnippetDir = '~/.vim/ultisnips/snippets'
@@ -330,3 +337,9 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 set background=dark
 set termguicolors
 colorscheme atom-dark
+
+" カーソル表示
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[0 q"
+
