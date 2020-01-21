@@ -18,14 +18,6 @@ alias untar "tar -zxvf"
 alias getpass "openssl rand -base64 20"
 alias sha "shasum -a 256"
 
-# function gcob -d "Fuzzy-find and checkout a branch"
-#   git branch --all | grep -v HEAD | string trim | fzf | read -l result; and git checkout "$result"
-# end
-
-function gcoc -d "Fuzzy-find and checkout a commit"
-  git log --pretty=oneline --abbrev-commit --reverse | fzf --tac +s -e | awk '{print $1;}' | read -l result; and git checkout "$result"
-end
-
 rbenv init - | source
 
 # phpbrew

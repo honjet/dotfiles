@@ -237,7 +237,7 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 
 " Linter
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 " 補完
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " 言語サーバクライアント
@@ -387,6 +387,22 @@ if executable('rg')
         \   fzf#vim#with_preview({'options': '--exact --reverse --delimiter : --nth 3..'}, 'up:50%:wrap'))
 endif
 
+function! CdFind(dir)
+  cd `=a:dir`
+  edit `=a:dir`
+  GFiles
+  if has('nvim')
+    call feedkeys('i', 'n')
+  endif
+endfunction
+
+if executable('ghq')
+  command! -bang -nargs=0 Ghq
+    \ call fzf#run({
+    \   'source': 'ghq list --full-path',
+    \   'sink': function('CdFind')})
+endif
+
 " fzf コマンド検索
 nnoremap <Space>p :Commands<CR>
 " fzf ホームディレクトリからのファイル検索
@@ -406,7 +422,7 @@ nnoremap <Space>f :NERDTreeFind<CR>
 nnoremap <Space>t :NERDTreeToggle<CR>
 
 " fugitive git status
-nnoremap <silent> <Space>s :<C-u>Gstatus<CR><Esc>
+nnoremap <silent> <Space>s :Gstatus<CR>
 
 " ctrlp <Ctrl-p>でファイル履歴を検索
 let g:ctrlp_cmd = 'CtrlPMRUFiles'
@@ -512,9 +528,11 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['css'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['txt'] = ''
 
-autocmd Filetype ruby setlocal softtabstop=2
-autocmd Filetype ruby setlocal sw=2
-autocmd Filetype ruby setlocal ts=2
+augroup RubyFormat
+  autocmd Filetype ruby setlocal softtabstop=2
+  autocmd Filetype ruby setlocal sw=2
+  autocmd Filetype ruby setlocal ts=2
+augroup end
 
 " rustfmt
 let g:rustfmt_autosave = 1
@@ -535,6 +553,7 @@ augroup end
 
 " markdownはテキストを隠さない
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
 
 " Enable rufo (RUby FOrmat)
 let g:rufo_auto_formatting = 0
@@ -547,8 +566,8 @@ let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#43494C'
 
 " 自作スニペット置場
-set runtimepath+=~/.vim/snippets
 let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
+set runtimepath+=~/.vim/snippets
 
 " PHP
 let g:phpfmt_autosave = 0
@@ -562,3 +581,5 @@ endif
 command! Filepath echo expand('%:p')
 command! InitVim e ~/.config/nvim/init.vim
 command! FishConfig e ~/.config/fish/config.fish
+
+
