@@ -153,8 +153,8 @@ nnoremap <Enter> o<Esc>
 " ハイライト解除
 nnoremap <Esc><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
-nnoremap sj ddp==
-nnoremap sk ddkP==
+" nnoremap sj ddp==
+" nnoremap sk ddkP==
 
 nnoremap ≠ <c-w>+
 nnoremap – <c-w>-
@@ -248,6 +248,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 " 言語系
 Plug 'plasticboy/vim-markdown'
+Plug 'habamax/vim-asciidoctor'
 Plug 'cespare/vim-toml'
 Plug 'rust-lang/rust.vim'
 Plug 'timonv/vim-cargo'
@@ -379,6 +380,10 @@ let g:fzf_layout = { 'down': '~70%' }
 " fzf 選択キー
 let g:fzf_commands_expect = 'enter'
 
+" fzf Git内ファイル検索(gitignore対象は除外し、Untracked filesは含む)
+command! -bang -nargs=* GitFiles
+    \ call fzf#vim#gitfiles('--exclude-standard -co')
+
 " fzf ripgrepによる高速grep
 if executable('rg')
     command! -bang -nargs=* Rg
@@ -408,7 +413,7 @@ nnoremap <Space>p :Commands<CR>
 " fzf ホームディレクトリからのファイル検索
 " nnoremap <silent> <Space>ff :Files ~/<CR>
 " fzf Gitプロジェクト内のファイル検索
-nnoremap <Space>o :GFiles<CR>
+nnoremap <Space>o :GitFiles<CR>
 " fzf ファイル履歴検索
 nnoremap <Space>h :History<CR>
 " fzf バッファ検索
@@ -469,9 +474,9 @@ let &t_EI = "\<Esc>[0 q"
 
 if has('nvim')
     " python3 設定
-    let g:python3_host_prog = '/usr/local/bin/python3'
+    let g:python3_host_prog = '/usr/local/opt/python@3.8/bin/python3'
     " ruby設定
-    let g:ruby_host_prog = '~/.rbenv/versions/2.4.3/bin/neovim-ruby-host'
+    let g:ruby_host_prog = '~/.rbenv/versions/2.7.1/bin/neovim-ruby-host'
     " LanguageClient
     " 各言語の Language Server 設定
     let g:LanguageClient_serverCommands = {
@@ -503,6 +508,12 @@ if has('nvim')
 endif
 
 let g:deoplete#enable_at_startup = 1
+
+
+" スニペットを別filetypeでも使えるようにする
+augroup UltiSnipsFiletypeAdding
+  autocmd FileType javascript UltiSnipsAddFiletypes html
+augroup end
 
 " UltiSnips スニペット展開
 let g:UltiSnipsExpandTrigger="<c-k>"
@@ -578,8 +589,15 @@ if has('gui_vimr')
     set nocursorline
 endif
 
+function! IncrementCmdHeight()
+  let &cmdheight += 1
+endfunction
+
+function! DecrementCmdHeight()
+  let &cmdheight -= 1
+endfunction
+
+nnoremap <silent> <Space>+ :call IncrementCmdHeight()<CR>
+nnoremap <silent> <Space>- :call DecrementCmdHeight()<CR>
+
 command! Filepath echo expand('%:p')
-command! InitVim e ~/.config/nvim/init.vim
-command! FishConfig e ~/.config/fish/config.fish
-
-
