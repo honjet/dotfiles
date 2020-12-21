@@ -18,12 +18,17 @@ alias untar "tar -zxvf"
 alias getpass "openssl rand -base64 20"
 alias sha "shasum -a 256"
 
+# rbenv (Ruby)
 rbenv init - | source
+
+# node (JavaScript)
+nodenv init - | source
+
+# pyenv (Python)
+# set -Ux PYENV_ROOT $HOME/.pyenv
+# set -Ux fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+# pyenv init - | source
+# pyenv virtualenv-init - | source
 
 # phpbrew
 source ~/.phpbrew/phpbrew.fish
-set -g fish_user_paths "/usr/local/opt/icu4c/bin" $fish_user_paths
-set -g fish_user_paths "/usr/local/opt/icu4c/sbin" $fish_user_paths
-set -g fish_user_paths "/usr/local/opt/libxml2/bin" $fish_user_paths
-set -g fish_user_paths "/usr/local/opt/openssl/bin" $fish_user_paths
-set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
