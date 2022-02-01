@@ -49,9 +49,11 @@ $uri = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 Run `vim` and execute  command `:PlugInstall` .
 
 ## Recommended Tools
-* [Cica](https://github.com/miiton/Cica)
-* [tmux](https://github.com/tmux/tmux)
+* Font
+    * [Cica](https://github.com/miiton/Cica)
+    * [HackGenNerd Console](https://github.com/yuru7/HackGen)
 * [alacritty](https://github.com/jwilm/alacritty)
+* [tmux](https://github.com/tmux/tmux)
 * [fish](https://github.com/fish-shell/fish-shell)
 * [ripgrep](https://github.com/BurntSushi/ripgrep)
 * [fzf](https://github.com/junegunn/fzf)
