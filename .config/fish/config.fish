@@ -9,4 +9,5 @@ alias gdifff "git diff --name-only"
 alias gdiffw "git diff --word-diff"
 
 # node (JavaScript)
-nodenv init - | source
+#nodenv init - | source
+status --is-interactive; and source (nodenv init -|psub)
