@@ -1,6 +1,6 @@
 # Install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /root/.profile
+echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.profile
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Install packages
@@ -63,4 +63,4 @@ curl https://raw.githubusercontent.com/honjet/dotfiles/master/.config/fish/confi
 curl https://raw.githubusercontent.com/honjet/dotfiles/master/.config/fish/config.fish > ~/.config/fish/functions/fish_prompt.fish
 curl https://raw.githubusercontent.com/honjet/dotfiles/master/.config/nvim/init.vim > ~/.config/nvim/init.vim
 
-echo 'Please restart shell'
+echo 'Please restart shell.'
