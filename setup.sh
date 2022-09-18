@@ -57,3 +57,5 @@ curl https://raw.githubusercontent.com/honjet/dotfiles/master/.vimrc > ~/.vimrc
 curl https://raw.githubusercontent.com/honjet/dotfiles/master/.config/fish/config.fish > ~/.config/fish/config.fish
 curl https://raw.githubusercontent.com/honjet/dotfiles/master/.config/fish/config.fish > ~/.config/fish/functions/fish_prompt.fish
 curl https://raw.githubusercontent.com/honjet/dotfiles/master/.config/nvim/init.vim > ~/.config/nvim/init.vim
+
+echo 'Please restart shell'

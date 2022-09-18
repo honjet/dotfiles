@@ -98,6 +98,7 @@ set nofoldenable
 set scrolloff=7
 
 set conceallevel=0
+set termguicolors
 
 
 "================================================================
@@ -240,14 +241,14 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'
 
 " Linter
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 " 補完
 "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " 言語サーバクライアント
-Plug 'autozimu/LanguageClient-neovim', {
-      \ 'branch': 'next',
-      \ 'do': 'bash install.sh',
-      \ }
+" Plug 'autozimu/LanguageClient-neovim', {
+"       \ 'branch': 'next',
+"       \ 'do': 'bash install.sh',
+"       \ }
 
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -290,9 +291,9 @@ Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'elmcast/elm-vim'
 Plug 'leafgarland/typescript-vim'
-Plug 'prettier/vim-prettier', {
-    \ 'do': 'yarn install',
-    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss'] }
+" Plug 'prettier/vim-prettier', {
+"     \ 'do': 'yarn install',
+"     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss'] }
 
 call plug#end()
 
@@ -352,43 +353,43 @@ let g:lightline.component_type = {
 
 " lightline 現在のgitブランチ
 function! GitBranch() abort
-  let l:branch = fugitive#head()
+  let l:branch = FugitiveHead()
   return l:branch == '' ? '' : printf(" %s", branch)
 endfunction
 
 " lightline ALEのエラー数
 " ale
-function! LightlineLinterErrors() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf("%d ", all_errors)
-endfunction
+" function! LightlineLinterErrors() abort
+"   let l:counts = ale#statusline#Count(bufnr(''))
+"   let l:all_errors = l:counts.error + l:counts.style_error
+"   let l:all_non_errors = l:counts.total - l:all_errors
+"   return l:counts.total == 0 ? '' : printf("%d ", all_errors)
+" endfunction
 
 " lightline ALEの警告数
 " ale
-function! LightlineLinterWarnings() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? '' : printf("%d ", all_non_errors)
-endfunction
+" function! LightlineLinterWarnings() abort
+"   let l:counts = ale#statusline#Count(bufnr(''))
+"   let l:all_errors = l:counts.error + l:counts.style_error
+"   let l:all_non_errors = l:counts.total - l:all_errors
+"   return l:counts.total == 0 ? '' : printf("%d ", all_non_errors)
+" endfunction
 
 " lightline OK
 " ale
-function! LightlineLinterOK() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
-  return l:counts.total == 0 ? "" : ''
-endfunction
+" function! LightlineLinterOK() abort
+"   let l:counts = ale#statusline#Count(bufnr(''))
+"   let l:all_errors = l:counts.error + l:counts.style_error
+"   let l:all_non_errors = l:counts.total - l:all_errors
+"   return l:counts.total == 0 ? "" : ''
+" endfunction
 
 " lightline Lint時にlightline表示更新
 " ale
-augroup LightLineOnALE
-  autocmd!
-  autocmd User ALELint call lightline#update()
-augroup END
+" augroup LightLineOnALE
+"   autocmd!
+"   autocmd User ALELint call lightline#update()
+" augroup END
 
 " fzf 表示領域
 let g:fzf_layout = { 'down': '~70%' }
@@ -461,16 +462,16 @@ endif
 "call smartinput_endwise#define_default_rules()
 
 " ale 諸設定
-let g:ale_set_highlights = 1
+" let g:ale_set_highlights = 1
 " let g:ale_fix_on_save = 1
-let g:ale_linters = { 'rust': ['analyzer'] }
+" let g:ale_linters = { 'rust': ['analyzer'] }
 "       \ 'ruby': ['rubocop']
 "       \ }
       " \ 'javascript': ['prettier']
 " let g:ale_fixers = {
 "       \ 'javascript': ['prettier']
 "       \ }
-let g:ale_sign_column_always = 1
+" let g:ale_sign_column_always = 1
 " let g:ale_javascript_prettier_use_local_config = 1
 
 " ruby
@@ -627,44 +628,39 @@ local nvim_lsp = require('lspconfig')
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
---Enable completion triggered by <c-x><c-o>
-buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  --Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
--- Mappings.
-local opts = { noremap=true, silent=true }
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
 
--- See `:help vim.lsp.*` for documentation on any of the below functions
-buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap("n", "<space>l", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
 
--- ★ これ
-nvim_lsp.rust_analyzer.setup{
-on_attach = on_attach,
-}
-
-nvim_lsp.pylsp.setup{
-on_attah = on_attach,
-}
+-- -- ★ これ
+-- nvim_lsp.rust_analyzer.setup{
+--   on_attach = on_attach,
+-- }
 
   -- Setup nvim-cmp.
   local cmp = require'cmp'
@@ -720,8 +716,8 @@ cmp.setup.cmdline(':', {
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig')['rust-analyzer'].setup {
-    capabilities = capabilities
-    }
+  -- require('lspconfig')['rust-analyzer'].setup {
+  --   capabilities = capabilities
+  --   }
 
 EOF
