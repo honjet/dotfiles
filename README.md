@@ -11,7 +11,7 @@
 sudo apt update && sudo apt install -y curl git wget llvm xz-utils build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libncursesw5-dev tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-## Install
+## Installation
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/honjet/dotfiles/master/setup.sh)"
 ```
