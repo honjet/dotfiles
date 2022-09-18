@@ -4,7 +4,8 @@ echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /root/.profile
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Install packages
-brew install tmux git fish vim neovim asdf fisher ghq fzf
+brew install tmux git fish vim neovim asdf ghq fzf fisher
+brwe install ripgrep ripgrep-all exa bat fd sd procs grex topgrade
 
 # Install tools
 fisher install fisherman/fzf
@@ -14,11 +15,12 @@ fisher install decors/fish-ghq
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source "$HOME/.cargo/env"
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# source "$HOME/.cargo/env"
 
 # Install tools written by Rust
-cargo install ripgrep exa fd-find sd topgrade procs grex xsv csview broot hexyl tokei monolith
+# cargo install ripgrep exa fd-find sd topgrade procs grex
+# cargo install xsv csview tv-cli broot hexyl tokei monolith
 
 # Rust for programming
 # rustup toolchain add stable nightly 1.42.0

@@ -1,5 +1,8 @@
 # dotfiles
 
+## OS
+* Ubuntu
+
 ## Prerequirements
 * curl
 * git
