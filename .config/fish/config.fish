@@ -8,6 +8,7 @@ alias ggra "git log --graph --oneline --decorate=short --date=format:'%Y-%m-%d %
 alias gdifff "git diff --name-only"
 alias gdiffw "git diff --word-diff"
 
-# node (JavaScript)
-#nodenv init - | source
-status --is-interactive; and source (nodenv init -|psub)
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+
