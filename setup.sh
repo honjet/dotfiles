@@ -14,9 +14,6 @@ fish -c "fisher install jorgebucaran/fisher"
 fish -c "fisher install fisherman/fzf"
 fish -c "fisher install decors/fish-ghq"
 
-# Install vim-plug
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 # configure asdf
 echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ~/.profile
 . $(brew --prefix asdf)/libexec/asdf.sh
@@ -48,6 +45,14 @@ asdf global ruby latest
 asdf plugin add nodejs
 asdf install nodejs latest
 asdf global nodejs latest
+
+# Install vim-plug
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Install neovim package
+pip3 install pynvim
+gem install neovim
+npm install neovim
 
 # Place config files
 mkdir -p ~/.config/fish/functions
