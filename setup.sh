@@ -52,7 +52,7 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 # Install neovim package
 pip3 install pynvim
 gem install neovim
-npm install neovim
+npm install -g neovim
 
 # Place config files
 mkdir -p ~/.config/fish/functions
