@@ -525,7 +525,10 @@ shell:
 #  program: /bin/bash
 #  args:
 #    - --login
-  program: ubuntu2204.exe
+#  program: ubuntu2204.exe
+  program: wsl.exe
+  args:
+    - ~ -d Ubuntu
 
 # Startup directory
 #
