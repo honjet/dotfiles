@@ -24,7 +24,7 @@ Run `nvim` and execute command `:PlugInstall`
 * Font
     * [HackGenNerd Console](https://github.com/yuru7/HackGen)
     * [Cica](https://github.com/miiton/Cica)
-* Terminal
+* Terminal Emulator
     * [alacritty](https://github.com/jwilm/alacritty)
 * Terminal Multiplexer
     * [tmux](https://github.com/tmux/tmux)
