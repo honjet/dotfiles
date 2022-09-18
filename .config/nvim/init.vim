@@ -82,6 +82,7 @@ set incsearch
 " 検索時に最後まで行ったら最初に戻る
 set wrapscan
 " 検索語をハイライト表示
+
 set hlsearch
 " 置換時に g オプションをデフォルトでつける
 set gdefault
