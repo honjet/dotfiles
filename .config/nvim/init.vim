@@ -7,33 +7,6 @@ set encoding=utf-8
 set fenc=utf-8
 scriptencoding utf-8
 
-" 自動生成ファイルの出力先指定
-" neovimじゃないとデフォルトで変なところに出力されるのでまとめる
-if !has('nvim')
-    let back_path = expand('~/.vim/backup')
-    let swap_path = expand('~/.vim/swap')
-    let info_path = expand('~/.vim/viminfo')
-    let undo_path = expand('~/.vim/undo')
-
-    if !isdirectory(back_path)
-        call mkdir(back_path, "p")
-    endif
-    if !isdirectory(swap_path)
-        call mkdir(swap_path, "p")
-    endif
-    if !isdirectory(info_path)
-        call mkdir(info_path, "p")
-    endif
-    if !isdirectory(undo_path)
-        call mkdir(undo_path, "p")
-    endif
-
-    set backupdir=~/.vim/backup
-    set directory=~/.vim/swap
-    set viminfo+=n~/.vim/viminfo/viminfo.txt
-    set undodir=~/.vin/undo
-endif
-
 " 編集中のファイルが変更されたら自動で読み直す
 set autoread
 " バッファが編集中でもその他のファイルを開けるように
@@ -488,43 +461,7 @@ let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[0 q"
 
-if has('nvim')
-    " python3 設定
-    let g:python3_host_prog = '/usr/bin/python3'
-    " ruby設定
-    let g:ruby_host_prog = '~/.rbenv/versions/2.7.1/bin/neovim-ruby-host'
-    " LanguageClient
-    " 各言語の Language Server 設定
-    let g:LanguageClient_serverCommands = {
-                \ 'rust': ['rust-analyzer'],
-                \ 'haskell': ['hie', '--lsp'],
-                \ 'html': ['html-languageserver', '--stdio'],
-                \ 'css': ['css-languageserver', '--stdio'],
-                \ 'javascript': ['javascript-typescript-stdio'],
-                \ 'typescript': ['javascript-typescript-stdio'],
-                \ }
-    let g:LanguageClient_autoStart = 1
-
-    " LanguageClient カーソル下のドキュメント表示
-    nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-    " LanguageClient カーソル下の定義ジャンプ
-    nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-    " LanguageClient カーソル下の実装ジャンプ
-    nnoremap <silent> <Space>li :call LanguageClient_textDocument_implementation()<CR>
-    " LanguageClient カーソル下のリネーム
-    nnoremap <silent> <Space>lr :call LanguageClient_textDocument_rename()<CR>
-    " LanguageClient シンボルリスト
-    nnoremap <silent> <Space>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-    " LanguageClient カーソル下の参照リスト
-    nnoremap <silent> <Space>ll :call LanguageClient_textDocument_references()<CR>
-    " LanguageClient テキスト整形
-    nnoremap <silent> <Space>lf :call LanguageClient_textDocument_formatting()<CR>
-    " LanguageClient 範囲のテキスト整形
-    nnoremap <silent> <Space>lF :call LanguageClient_textDocument_rangeFormatting()<CR>
-endif
-
 let g:deoplete#enable_at_startup = 1
-
 
 " スニペットを別filetypeでも使えるようにする
 augroup UltiSnipsFiletypeAdding
