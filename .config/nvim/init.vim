@@ -30,7 +30,7 @@ set visualbell
 " 括弧入力時の対応する括弧を表示
 set showmatch
 " ステータスラインを常に表示
-set laststatus=2
+set laststatus=3
 " コマンドラインの補完
 set wildmode=list,full
 set wildignorecase
@@ -180,14 +180,18 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " 日本語ヘルプ
 Plug 'vim-jp/vimdoc-ja'
 " カラースキーム
-Plug 'gosukiwi/vim-atom-dark'
+" Plug 'gosukiwi/vim-atom-dark'
+Plug 'EdenEast/nightfox.nvim'
 " ステータスバーなどの見た目を綺麗にする
-Plug 'itchyny/lightline.vim'
+" Plug 'itchyny/lightline.vim'
+Plug 'nvim-lualine/lualine.nvim'
+" Plug 'feline-nvim/feline.nvim'
 " サイドバー表示のファイラ
 Plug 'scrooloose/nerdtree'
 " NERDTreeにファイルアイコンをつける
-" Cicaフォントのインストールを推奨 --> https://github.com/miiton/Cica
+" アイコン対応フォントのインストールを推奨
 Plug 'ryanoasis/vim-devicons'
+" Plug 'kyazdani42/nvim-web-devicons'
 " インデント可視化
 Plug 'Yggdroot/indentLine'
 " Normalモード <Ctrl-p> でファイルの選択を開く (fzf使えないとき用)
@@ -229,6 +233,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'nvim-lua/lsp-status.nvim'
 
 " For ultisnips users.
 Plug 'SirVer/ultisnips'
@@ -274,7 +279,8 @@ call plug#end()
 set helplang=ja,en
 
 " vim-atom-dark カラースキーム設定
-colorscheme atom-dark-256
+" colorscheme atom-dark-256
+" colorscheme nightfox
 
 " lightline カレントディレクトリからの相対パス
 function! LightLineFilename()
@@ -558,8 +564,50 @@ nnoremap <silent> <Space>- :call DecrementCmdHeight()<CR>
 
 command! Filepath echo expand('%:p')
 
-" lspconfig
+" ==========================================================================
+" config by lua
+" ==========================================================================
+
 lua << EOF
+
+-- colorscheme
+
+vim.cmd("colorscheme nightfox")
+
+-- lualine config
+--### Default Separators
+--| Name                 | Value |
+--| `vertical_bar`       | `'┃'` |
+--| `vertical_bar_thin`  | `'│'` |
+--| `left`               | `''` |
+--| `right`              | `''` |
+--| `block`              | `'█'` |
+--| `left_filled`        | `''` |
+--| `right_filled`       | `''` |
+--| `slant_left`         | `''` |
+--| `slant_left_thin`    | `''` |
+--| `slant_right`        | `''` |
+--| `slant_right_thin`   | `''` |
+--| `slant_left_2`       | `''` |
+--| `slant_left_2_thin`  | `''` |
+--| `slant_right_2`      | `''` |
+--| `slant_right_2_thin` | `''` |
+--| `left_rounded`       | `''` |
+--| `left_rounded_thin`  | `''` |
+--| `right_rounded`      | `''` |
+--| `right_rounded_thin` | `''` |
+--| `circle`             | `'●'` |
+
+--
+
+local lsp_status = require('lsp-status')
+require('lualine').setup({
+  sections = {
+    lualine_c = { 'filename' }
+  }
+})
+
+-- lsp config
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
@@ -598,6 +646,10 @@ end
 -- nvim_lsp.rust_analyzer.setup{
 --   on_attach = on_attach,
 -- }
+
+nvim_lsp.tsserver.setup{
+  on_attach = on_attach,
+}
 
   -- Setup nvim-cmp.
   local cmp = require'cmp'
