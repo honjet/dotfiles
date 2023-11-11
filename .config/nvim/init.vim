@@ -126,7 +126,7 @@ nnoremap Y y$
 nnoremap + <c-a>
 nnoremap - <c-x>
 " 改行
-nnoremap <Enter> o<Esc>
+" nnoremap <Enter> o<Esc>
 " ハイライト解除
 nnoremap <Esc><Esc> :noh<CR>
 " 上下と入れ替えてインデント調整
@@ -137,6 +137,8 @@ nnoremap ≠ <c-w>+
 nnoremap – <c-w>-
 nnoremap ≤ <c-w><
 nnoremap ≥ <c-w>>
+
+nnoremap <silent> <space>e :lua vim.diagnostic.open_float()<CR>
 
 " ---------------------------------------------------------------
 " コマンドモードでのキーマッピング
@@ -181,7 +183,8 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'vim-jp/vimdoc-ja'
 " カラースキーム
 " Plug 'gosukiwi/vim-atom-dark'
-Plug 'EdenEast/nightfox.nvim'
+" Plug 'EdenEast/nightfox.nvim'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 " ステータスバーなどの見た目を綺麗にする
 " Plug 'itchyny/lightline.vim'
 Plug 'nvim-lualine/lualine.nvim'
@@ -216,6 +219,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 " Git操作をVimから。 :Gstatusが便利
 Plug 'tpope/vim-fugitive'
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v3.*' }
 
 " Linter
 " Plug 'dense-analysis/ale'
@@ -248,6 +252,7 @@ Plug 'timonv/vim-cargo'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'elzr/vim-json'
+Plug 'nvim-lua/plenary.nvim'
 
 " ruby on rails
 " Plug 'vim-ruby/vim-ruby'
@@ -269,6 +274,7 @@ Plug 'mattn/emmet-vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'elmcast/elm-vim'
 Plug 'leafgarland/typescript-vim'
+Plug 'prettier/vim-prettier'
 " Plug 'prettier/vim-prettier', {
 "     \ 'do': 'yarn install',
 "     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss'] }
@@ -283,58 +289,58 @@ set helplang=ja,en
 " colorscheme nightfox
 
 " lightline カレントディレクトリからの相対パス
-function! LightLineFilename()
-  return expand('%')
-endfunction
+" function! LightLineFilename()
+"   return expand('%')
+" endfunction
 
 " lightline ステータスバーの表示設定
-let g:lightline = {
-            \ 'component': {
-            \   'readonly': '%{&readonly?"":""}',
-            \   'coordinate': '%c: %l/%L',
-            \   'truncate': '%<',
-            \   'bubo': "",
-            \ },
-            \ 'active': {
-            \   'left': [['mode', 'paste'], ['filename', 'modified', 'readonly', 'gitbranch'], ['truncate']],
-            \   'right': [['coordinate'], ['fileformat', 'fileencoding', 'filetype'], ['bubo', 'linter_errors', 'linter_warnings', 'linter_ok']]
-            \ },
-            \ 'component_function': {
-            \   'gitbranch': 'GitBranch'
-            \ },
-            \ 'separator': { 'left': "", 'right': " " },
-            \ 'subseparator': { 'left': "", 'right': " " }
-            \ }
+" let g:lightline = {
+"             \ 'component': {
+"             \   'readonly': '%{&readonly?"":""}',
+"             \   'coordinate': '%c: %l/%L',
+"             \   'truncate': '%<',
+"             \   'bubo': "",
+"             \ },
+"             \ 'active': {
+"             \   'left': [['mode', 'paste'], ['filename', 'modified', 'readonly', 'gitbranch'], ['truncate']],
+"             \   'right': [['coordinate'], ['fileformat', 'fileencoding', 'filetype'], ['bubo', 'linter_errors', 'linter_warnings', 'linter_ok']]
+"             \ },
+"             \ 'component_function': {
+"             \   'gitbranch': 'GitBranch'
+"             \ },
+"             \ 'separator': { 'left': "", 'right': " " },
+"             \ 'subseparator': { 'left': "", 'right': " " }
+"             \ }
 
 " lightline タブバーの表示設定
-let g:lightline.tabline = {
-            \ 'left': [ [ 'tabs' ] ],
-            \ 'right': [ [ 'close' ] ] }
+" let g:lightline.tabline = {
+"             \ 'left': [ [ 'tabs' ] ],
+"             \ 'right': [ [ 'close' ] ] }
 
-" lightline 色の設定
-let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
-
-" lightline コンポーネントが何を返すか
-let g:lightline.component_expand = {
-            \ 'tabs': 'lightline#tabs',
-            \ 'linter_warnings': 'LightlineLinterWarnings',
-            \ 'linter_errors': 'LightlineLinterErrors',
-            \ 'linter_ok': 'LightlineLinterOK'
-            \ }
-
-" lightline コンポーネントの表示色
-let g:lightline.component_type = {
-            \ 'tabs': 'tabsel',
-            \ 'readonly': 'error',
-            \ 'linter_warnings': 'warning',
-            \ 'linter_errors': 'error'
-            \ }
-
-" lightline 現在のgitブランチ
-function! GitBranch() abort
-  let l:branch = FugitiveHead()
-  return l:branch == '' ? '' : printf(" %s", branch)
-endfunction
+" " lightline 色の設定
+" let s:p = {'normal': {}, 'inactive': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'tabline': {}}
+"
+" " lightline コンポーネントが何を返すか
+" let g:lightline.component_expand = {
+"             \ 'tabs': 'lightline#tabs',
+"             \ 'linter_warnings': 'LightlineLinterWarnings',
+"             \ 'linter_errors': 'LightlineLinterErrors',
+"             \ 'linter_ok': 'LightlineLinterOK'
+"             \ }
+"
+" " lightline コンポーネントの表示色
+" let g:lightline.component_type = {
+"             \ 'tabs': 'tabsel',
+"             \ 'readonly': 'error',
+"             \ 'linter_warnings': 'warning',
+"             \ 'linter_errors': 'error'
+"             \ }
+"
+" " lightline 現在のgitブランチ
+" function! GitBranch() abort
+"   let l:branch = FugitiveHead()
+"   return l:branch == '' ? '' : printf(" %s", branch)
+" endfunction
 
 " lightline ALEのエラー数
 " ale
@@ -512,7 +518,7 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 
 " vim-prettier (formatter for js, ts, etc...)
 " let g:prettier#autoformat = 0
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue Prettier
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.vue Prettier
 
 " filetypeごとにインデント幅を設定
 augroup IndentSetting
@@ -572,7 +578,8 @@ lua << EOF
 
 -- colorscheme
 
-vim.cmd("colorscheme nightfox")
+vim.cmd("colorscheme tokyonight-moon")
+require("bufferline").setup{}
 
 -- lualine config
 --### Default Separators
@@ -639,8 +646,18 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>l", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  buf_set_keymap("n", "<space>l", "<cmd>lua vim.lsp.buf.format({async=true})<CR>", opts)
 end
+
+
+-- Setup lspconfig.
+-- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+-- require('lspconfig')['rust-analyzer'].setup {
+--   capabilities = capabilities
+--   }
+
 
 -- -- ★ これ
 -- nvim_lsp.rust_analyzer.setup{
@@ -655,26 +672,28 @@ nvim_lsp.tsserver.setup{
   local cmp = require'cmp'
 
   cmp.setup({
-  snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-    -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-    -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-    -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-    vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-  end,
-  },
-mapping = {
-  ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-  ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-  ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-  ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-  ['<C-e>'] = cmp.mapping({
-  i = cmp.mapping.abort(),
-  c = cmp.mapping.close(),
-  }),
-['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-},
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      end,
+    },
+    mapping = {
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    },
     sources = cmp.config.sources({
     { name = 'nvim_lsp' },
     -- { name = 'vsnip' }, -- For vsnip users.
@@ -701,12 +720,4 @@ cmp.setup.cmdline(':', {
   { name = 'cmdline' }
   })
 })
-
-  -- Setup lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  -- require('lspconfig')['rust-analyzer'].setup {
-  --   capabilities = capabilities
-  --   }
-
 EOF
