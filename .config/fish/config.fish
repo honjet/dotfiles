@@ -3,6 +3,7 @@ if status is-interactive
 	source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish
 
 	starship init fish | source
+  fzf --fish | source
 
 	# Git
 	alias gst "git status --short --branch"
@@ -11,3 +12,5 @@ if status is-interactive
 	alias gdifff "git diff --name-only"
 	alias gdiffw "git diff --word-diff"
 end
+
+source /home/linuxbrew/.linuxbrew/opt/asdf/libexec/asdf.fish
